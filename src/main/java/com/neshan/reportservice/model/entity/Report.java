@@ -10,19 +10,14 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.time.LocalDateTime;
 
-@Getter
-@Setter
 @Entity
-@Builder
-@AllArgsConstructor
-@NoArgsConstructor
 @Table(name = "reports")
 @SQLDelete(sql = "UPDATE reports SET deleted = true WHERE id=?")
 @Where(clause = "deleted=false")
 @EntityListeners(AuditingEntityListener.class)
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
-@DiscriminatorColumn(name = "type")
-public abstract class Report {
+@DiscriminatorColumn(name = "report_type")
+public class Report {
 
     @Id
     @SequenceGenerator(
