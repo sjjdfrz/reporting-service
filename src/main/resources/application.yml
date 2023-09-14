@@ -1,0 +1,33 @@
+server:
+  servlet:
+    context-path: /api/v1
+  port: 8080
+
+spring:
+
+  main:
+    banner-mode: off
+
+  datasource:
+    url: jdbc:postgresql://localhost:5432/routing-reporting-system
+    username: postgres
+    password: sajjad#farzaneh1
+
+#  jpa:
+#    hibernate:
+#      ddl-auto: create
+
+#resilience4j.ratelimiter:
+#  instances:
+#    rate-limit:
+#      limitForPeriod: 100
+#      limitRefreshPeriod: 1h
+#      timeoutDuration: 0s
+#      registerHealthIndicator: true
+#      eventConsumerBufferSize: 100
+#    login:
+#      limitForPeriod: 5
+#      limitRefreshPeriod: 1h
+#      timeoutDuration: 0s
+#      registerHealthIndicator: true
+#      eventConsumerBufferSize: 100
