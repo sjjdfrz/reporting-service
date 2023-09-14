@@ -2,6 +2,7 @@ package com.neshan.reportservice.model.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
+import lombok.experimental.SuperBuilder;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;
 import org.locationtech.jts.geom.Point;
@@ -10,7 +11,11 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.time.LocalDateTime;
 
+@Getter
 @Entity
+@SuperBuilder
+@AllArgsConstructor
+@NoArgsConstructor
 @Table(name = "reports")
 @SQLDelete(sql = "UPDATE reports SET deleted = true WHERE id=?")
 @Where(clause = "deleted=false")

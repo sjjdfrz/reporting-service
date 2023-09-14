@@ -3,22 +3,17 @@ package com.neshan.reportservice.model.entity;
 
 import com.neshan.reportservice.model.enums.TrafficType;
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.NoArgsConstructor;
+import lombok.experimental.SuperBuilder;
 
 @Entity
+@SuperBuilder
+@AllArgsConstructor
+@NoArgsConstructor
 @DiscriminatorValue("traffic")
 public class TrafficReport extends Report{
-
-    @Id
-    @SequenceGenerator(
-            name = "traffic_report_sequence",
-            sequenceName = "traffic_report_sequence",
-            allocationSize = 1
-    )
-    @GeneratedValue(
-            strategy = GenerationType.SEQUENCE,
-            generator = "traffic_report_sequence"
-    )
-    private long id;
 
     private TrafficType type;
 }
