@@ -1,6 +1,5 @@
 package com.neshan.reportservice.model.entity;
 
-import com.neshan.reportservice.model.enums.AccidentType;
 import com.neshan.reportservice.model.enums.CameraType;
 import jakarta.persistence.*;
 
