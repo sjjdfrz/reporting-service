@@ -3,8 +3,6 @@ package com.neshan.reportservice.model.entity;
 import com.neshan.reportservice.model.enums.AccidentType;
 import jakarta.persistence.DiscriminatorValue;
 import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;

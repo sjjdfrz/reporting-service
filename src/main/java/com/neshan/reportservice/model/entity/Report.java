@@ -37,8 +37,6 @@ public class Report {
     )
     private long id;
 
-    private long userId;
-
     private Point location;
 
     @Builder.Default

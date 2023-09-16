@@ -2,7 +2,6 @@ package com.neshan.reportservice.repository;
 
 import com.neshan.reportservice.model.dto.ReportsDto;
 import com.neshan.reportservice.model.entity.Report;
-import com.neshan.reportservice.model.enums.ReportType;
 import org.locationtech.jts.geom.LineString;
 import org.locationtech.jts.geom.Point;
 import org.springframework.data.jpa.repository.JpaRepository;
