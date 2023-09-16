@@ -39,6 +39,10 @@ public class Report {
 
     private Point location;
 
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private User user;
+
     @Builder.Default
     private boolean deleted = false;
 

@@ -28,6 +28,13 @@ public class GlobalExceptionHandler {
     }
 
     @ExceptionHandler
+    public ResponseEntity<ErrorResponse> handlePasswordMismatchException(PasswordMismatchException exc) {
+
+        ErrorResponse err = buildErrorResponse(exc);
+        return new ResponseEntity<>(err, HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler
     public ResponseEntity<ErrorResponse> handleMethodArgumentNotValid(MethodArgumentNotValidException exc) {
 
         if (exc.getBindingResult().getFieldErrors().isEmpty()) {

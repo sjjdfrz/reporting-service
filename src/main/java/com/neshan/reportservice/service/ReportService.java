@@ -2,7 +2,6 @@ package com.neshan.reportservice.service;
 
 import com.neshan.reportservice.exception.NoSuchElementFoundException;
 import com.neshan.reportservice.mapper.ReportMapper;
-import com.neshan.reportservice.model.dto.FeedbackDto;
 import com.neshan.reportservice.model.dto.ReportDto;
 import com.neshan.reportservice.model.dto.ReportsDto;
 import com.neshan.reportservice.model.dto.RoutingDto;
@@ -92,18 +91,18 @@ public class ReportService {
         return reportRepository.findAllReportsOfRoute(routeLine);
     }
 
-    public void feedback(long reportId, FeedbackDto feedbackDto) {
+    public void feedback(long reportId, FeedbackAction action) {
 
         Report report = reportRepository
                 .findById(reportId)
                 .orElseThrow(() -> new NoSuchElementFoundException(
                         String.format("The report with Id %d was not found.", reportId)));
 
-        if (feedbackDto.action() == FeedbackAction.LIKE) {
+        if (action == FeedbackAction.LIKE) {
 
             report.setExpiresAt(report.getExpiresAt().plusMinutes(2));
 
-        } else if (feedbackDto.action() == FeedbackAction.DISLIKE) {
+        } else if (action == FeedbackAction.DISLIKE) {
             report.setExpiresAt(report.getExpiresAt().minusMinutes(2));
         }
     }
