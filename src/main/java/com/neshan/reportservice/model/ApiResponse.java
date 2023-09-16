@@ -5,5 +5,6 @@ import lombok.Builder;
 
 @Builder
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public record ApiResponse<T>(String status, String message, T data) {
+public record ApiResponse<T>(String status, String message, T data, String token) {
 }
+

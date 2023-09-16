@@ -1,15 +1,13 @@
 package com.neshan.reportservice.controllers;
 
 import com.neshan.reportservice.model.ApiResponse;
-import com.neshan.reportservice.model.dto.FeedbackDto;
 import com.neshan.reportservice.model.dto.ReportDto;
 import com.neshan.reportservice.model.dto.ReportsDto;
 import com.neshan.reportservice.model.dto.RoutingDto;
-import com.neshan.reportservice.model.entity.Report;
+import com.neshan.reportservice.model.enums.FeedbackAction;
 import com.neshan.reportservice.service.ReportService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.locationtech.jts.geom.Point;
 import org.locationtech.jts.io.ParseException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -57,10 +55,10 @@ public class ReportController {
     @PostMapping("/reports/{reportId}/feedback")
     public ResponseEntity<ApiResponse<Object>> feedback(
             @PathVariable long reportId,
-            @RequestBody @Valid FeedbackDto feedbackDto
+            @RequestParam(name = "action") FeedbackAction action
             ) {
 
-        reportService.feedback(reportId, feedbackDto);
+        reportService.feedback(reportId, action);
 
         var response = ApiResponse
                 .builder()
