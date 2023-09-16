@@ -11,6 +11,7 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.time.LocalDateTime;
 
+@Setter
 @Getter
 @Entity
 @SuperBuilder
@@ -21,7 +22,7 @@ import java.time.LocalDateTime;
 @Where(clause = "deleted=false")
 @EntityListeners(AuditingEntityListener.class)
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
-@DiscriminatorColumn(name = "report_type")
+@DiscriminatorColumn(name = "title")
 public class Report {
 
     @Id
