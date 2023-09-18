@@ -22,7 +22,7 @@ import java.time.LocalDateTime;
 @Where(clause = "deleted=false")
 @EntityListeners(AuditingEntityListener.class)
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)
-@DiscriminatorColumn(name = "title")
+@DiscriminatorColumn(name = "title", discriminatorType = DiscriminatorType.STRING)
 public class Report {
 
     @Id
@@ -50,4 +50,15 @@ public class Report {
     private LocalDateTime createdAt;
 
     private LocalDateTime expiresAt;
+
+    @Column(name="title", insertable = false, updatable = false)
+    protected String subTitle;
+
+    public void increaseExpiresAt(int value) {
+        setExpiresAt(expiresAt.plusMinutes(value));
+    }
+
+    public void decreaseExpiresAt(int value) {
+        setExpiresAt(expiresAt.minusMinutes(value));
+    }
 }

@@ -7,7 +7,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public enum SpeedBumpType {
 
-    PLASTIC(0), RUBBER(1), ASPHALT(2);
+    PLASTIC(26), RUBBER(27), ASPHALT(28);
 
     private final int code;
 }

@@ -2,13 +2,9 @@ package com.neshan.reportservice.model.dto;
 
 import com.neshan.reportservice.model.enums.ReportType;
 
-public interface UserDto {
-
-    String getFirstName();
-
-    String getTitle();
-
-    ReportType getType();
-
+public interface ApprovalReports {
+    Long getId();
     String getLocation();
+    String getTitle();
+    ReportType getType();
 }

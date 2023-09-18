@@ -1,7 +1,6 @@
 package com.neshan.reportservice.mapper;
 
 import com.neshan.reportservice.model.dto.RegisterRequest;
-import com.neshan.reportservice.model.dto.UserDto;
 import com.neshan.reportservice.model.dto.UsersDto;
 import com.neshan.reportservice.model.entity.User;
 import org.mapstruct.*;
@@ -12,8 +11,6 @@ import org.mapstruct.*;
 public interface UserMapper {
 
     UsersDto userToUsersDto(User user);
-
-    UserDto userToUserDto(User user);
 
     @Mapping(target = "id", ignore = true)
     @Mapping(target = "password", ignore = true)

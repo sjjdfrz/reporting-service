@@ -7,7 +7,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public enum TrafficType {
 
-    LIGHT(0), SEMI_HEAVY(1), HEAVY(2);
+    LIGHT(0), SEMI_HEAVY(19), HEAVY(1);
 
     private final int code;
 }

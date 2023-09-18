@@ -40,13 +40,7 @@ public class UserService {
 
     @Transactional
     public UserDto getUser(long id) {
-
-        User user = userRepository
-                .findById(id)
-                .orElseThrow(() -> new NoSuchElementFoundException(
-                        String.format("The user with ID %d was not found.", id)));
-
-        return userMapper.userToUserDto(user);
+        return userRepository.findUserById(id);
     }
 
     @Transactional

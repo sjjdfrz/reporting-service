@@ -1,29 +1,29 @@
 package com.neshan.reportservice.model.enums.convertor;
 
-import com.neshan.reportservice.model.enums.Role;
+import com.neshan.reportservice.model.enums.ReportTitle;
 import jakarta.persistence.AttributeConverter;
 import jakarta.persistence.Converter;
 
 import java.util.stream.Stream;
 
 @Converter(autoApply = true)
-public class RoleConvertor implements AttributeConverter<Role, Integer> {
+public class ReportTitleConvertor implements AttributeConverter<ReportTitle, Integer> {
 
     @Override
-    public Integer convertToDatabaseColumn(Role role) {
-        if (role == null) {
+    public Integer convertToDatabaseColumn(ReportTitle reportTitle) {
+        if (reportTitle == null) {
             return null;
         }
-        return role.getCode();
+        return reportTitle.getCode();
     }
 
     @Override
-    public Role convertToEntityAttribute(Integer code) {
+    public ReportTitle convertToEntityAttribute(Integer code) {
         if (code == null) {
             return null;
         }
 
-        return Stream.of(Role.values())
+        return Stream.of(ReportTitle.values())
                 .filter(c -> c.getCode() == code)
                 .findFirst()
                 .orElseThrow(IllegalArgumentException::new);

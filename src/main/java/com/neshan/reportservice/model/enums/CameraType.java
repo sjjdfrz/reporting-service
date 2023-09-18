@@ -7,7 +7,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public enum CameraType {
 
-    RED_LIGHT(0), SPEED_CONTROL(1);
+    RED_LIGHT(3), SPEED_CONTROL(4);
 
     private final int code;
 }
