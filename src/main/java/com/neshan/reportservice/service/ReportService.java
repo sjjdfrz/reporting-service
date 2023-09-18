@@ -1,23 +1,25 @@
 package com.neshan.reportservice.service;
 
+import com.neshan.reportservice.exception.DuplicateReportException;
 import com.neshan.reportservice.exception.NoSuchElementFoundException;
 import com.neshan.reportservice.mapper.ReportMapper;
-import com.neshan.reportservice.model.dto.ReportDto;
-import com.neshan.reportservice.model.dto.ReportsDto;
-import com.neshan.reportservice.model.dto.RoutingDto;
+import com.neshan.reportservice.model.dto.*;
 import com.neshan.reportservice.model.entity.Report;
+import com.neshan.reportservice.model.entity.User;
+import com.neshan.reportservice.model.enums.ApprovalAction;
 import com.neshan.reportservice.model.enums.FeedbackAction;
 import com.neshan.reportservice.repository.ReportRepository;
+import com.neshan.reportservice.util.ReportConstants;
+import com.neshan.reportservice.util.ReportFactory;
+import com.neshan.reportservice.util.PointConvertor;
 import lombok.RequiredArgsConstructor;
-import org.locationtech.jts.geom.Coordinate;
-import org.locationtech.jts.geom.GeometryFactory;
 import org.locationtech.jts.geom.LineString;
 import org.locationtech.jts.geom.Point;
 import org.locationtech.jts.io.ParseException;
 import org.locationtech.jts.io.WKTReader;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
@@ -27,70 +29,59 @@ public class ReportService {
     private final ReportRepository reportRepository;
     private final ReportMapper reportMapper;
 
-    public void createReport(ReportDto reportDto) {
+    @Transactional
+    public List<GetAllReportsDto> getAllReports() {
+        return reportRepository.findAllReports();
+    }
 
-        GeometryFactory geometryFactory = new GeometryFactory();
-        Coordinate coordinate = new Coordinate(
-                reportDto.location().latitude(), reportDto.location().longitude());
-        Point location = geometryFactory.createPoint(coordinate);
-        location.setSRID(4326);
+    @Transactional
+    public GetReportDto getReport(long reportId) {
 
-        if (reportRepository.existsDuplicateReport(location, reportDto.type().getCode(), 2)) {
-            throw new RuntimeException("Duplicate Report!");
+        Report report = reportRepository
+                .findById(reportId)
+                .orElseThrow(() -> new NoSuchElementFoundException(
+                        String.format("The report with ID %d was not found.", reportId)));
+
+        return reportMapper.reportToReportDto(report);
+    }
+
+    @Transactional
+    public void createReport(CreateReportDto createReportDto, User user) {
+
+        // Check report duplication.
+        Point location = PointConvertor.customPointToJtsPoint(createReportDto.location());
+        if (reportRepository.existsDuplicateReport(
+                location,
+                createReportDto.type().getCode(),
+                ReportConstants.timeDifferenceConstants.get(createReportDto.title()))) {
+            throw new DuplicateReportException("Duplicate Report!");
         }
 
-        Report report;
-
-        switch (reportDto.title()) {
-            case ACCIDENT -> {
-                report = reportMapper.ReportDtoToAccidentReport(reportDto);
-                report.setExpiresAt(LocalDateTime.now().plusMinutes(1));
-            }
-            case CAMERA -> {
-                report = reportMapper.ReportDtoToCameraReport(reportDto);
-                report.setExpiresAt(LocalDateTime.now().plusMinutes(8));
-            }
-            case MAP_BUGS -> {
-                report = reportMapper.ReportDtoToMapBugsReport(reportDto);
-                report.setExpiresAt(LocalDateTime.now().plusMinutes(9));
-            }
-            case POLICE -> {
-                report = reportMapper.ReportDtoToPoliceReport(reportDto);
-                report.setExpiresAt(LocalDateTime.now().plusMinutes(7));
-            }
-            case TRAFFIC -> {
-                report = reportMapper.ReportDtoToTrafficReport(reportDto);
-                report.setExpiresAt(LocalDateTime.now().plusMinutes(11));
-            }
-            case SPEED_BUMP -> {
-                report = reportMapper.ReportDtoToSpeedBumpReport(reportDto);
-                report.setExpiresAt(LocalDateTime.now().plusMinutes(6));
-            }
-            case WAY_EVENTS -> {
-                report = reportMapper.ReportDtoToWayEventsReport(reportDto);
-                report.setExpiresAt(LocalDateTime.now().plusMinutes(4));
-            }
-            case ROAD_LOCATIONS -> {
-                report = reportMapper.ReportDtoToRoadLocationsReport(reportDto);
-                report.setExpiresAt(LocalDateTime.now().plusMinutes(5));
-            }
-            case WEATHER_CONDITIONS -> {
-                report = reportMapper.ReportDtoToWeatherConditionsReport(reportDto);
-                report.setExpiresAt(LocalDateTime.now().plusMinutes(3));
-            }
-            default -> throw new IllegalArgumentException("Invalid report title!");
-        }
-
+        ReportFactory reportFactory = new ReportFactory(reportMapper);
+        Report report = reportFactory.getReportByTitle(createReportDto);
+        report.setUser(user);
         reportRepository.save(report);
     }
 
-    public List<ReportsDto> routing(RoutingDto routingDto) throws ParseException {
+    @Transactional
+    public void deleteReport(long id) {
+        reportRepository.deleteById(id);
+    }
+
+    @Transactional
+    public void deleteAllReports() {
+        reportRepository.deleteAll();
+    }
+
+    @Transactional
+    public List<RouteReports> routing(RoutingDto routingDto) throws ParseException {
 
         LineString routeLine = (LineString) new WKTReader().read(routingDto.lineString());
         routeLine.setSRID(4326);
         return reportRepository.findAllReportsOfRoute(routeLine);
     }
 
+    @Transactional
     public void feedback(long reportId, FeedbackAction action) {
 
         Report report = reportRepository
@@ -98,12 +89,24 @@ public class ReportService {
                 .orElseThrow(() -> new NoSuchElementFoundException(
                         String.format("The report with Id %d was not found.", reportId)));
 
-        if (action == FeedbackAction.LIKE) {
+        if (action == FeedbackAction.LIKE)
+            report.increaseExpiresAt(ReportConstants.likeConstants.get(report.getSubTitle()));
+        else
+            report.decreaseExpiresAt(ReportConstants.dislikeConstants.get(report.getSubTitle()));
+    }
 
-            report.setExpiresAt(report.getExpiresAt().plusMinutes(2));
+    @Transactional
+    public List<GetAllReportsOfUserDto> getAllReportsOfUser(User user) {
+        return reportRepository.findAllReportsByUserId(user.getId());
+    }
 
-        } else if (action == FeedbackAction.DISLIKE) {
-            report.setExpiresAt(report.getExpiresAt().minusMinutes(2));
-        }
+    @Transactional
+    public List<ApprovalReports> getApprovalNeedReports() {
+        return reportRepository.findAllApprovedNeedReports();
+    }
+
+    @Transactional
+    public void approveReport(long reportId, ApprovalAction action) {
+        reportRepository.approveReport(reportId, action.name());
     }
 }

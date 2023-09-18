@@ -56,7 +56,7 @@ public class User implements UserDetails {
     private Role role = Role.USER;
 
     @OneToMany(mappedBy = "user")
-    private List<Report> orders;
+    private List<Report> reports;
 
     @Builder.Default
     private boolean deleted = false;

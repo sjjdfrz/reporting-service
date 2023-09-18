@@ -7,12 +7,12 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public enum MapBugsType {
 
-    CIRCULATION_DIRECTION(0),
-    DEAD_END(1),
-    NO_ENTRY(2),
-    EARTHY(3),
-    NO_CAR(4),
-    OTHER(5);
+    CIRCULATION_DIRECTION(5),
+    DEAD_END(6),
+    NO_ENTRY(7),
+    EARTHY(8),
+    NO_CAR(9),
+    OTHER(10);
 
     private final int code;
 }

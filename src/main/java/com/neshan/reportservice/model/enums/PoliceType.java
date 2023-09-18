@@ -7,7 +7,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public enum PoliceType {
 
-    POLICE(0), SECRET_POLICE(1), OPPOSITE_LINE(2);
+    POLICE(11), SECRET_POLICE(12);
 
     private final int code;
 }

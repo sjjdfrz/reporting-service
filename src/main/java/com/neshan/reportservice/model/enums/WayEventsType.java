@@ -7,7 +7,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public enum WayEventsType {
 
-    BLOCKED_ROAD(0), HOLE(1), CONSTRUCTION(2);
+    BLOCKED_ROAD(20), HOLE(21), CONSTRUCTION(22);
 
     private final int code;
 }

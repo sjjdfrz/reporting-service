@@ -46,6 +46,8 @@ public class SecurityConfiguration {
                         .hasAuthority("ADMIN")
                         .requestMatchers(HttpMethod.DELETE, AppConstants.DELETE_ADMIN_SECURED_URLs)
                         .hasAuthority("ADMIN")
+                        .requestMatchers(HttpMethod.GET, AppConstants.GET_USER_ADMIN_SECURED_URLs)
+                        .hasAnyAuthority("ADMIN", "USER")
                         .requestMatchers(HttpMethod.POST, AppConstants.POST_USER_ADMIN_SECURED_URLs)
                         .hasAnyAuthority("ADMIN", "USER")
                         .anyRequest()

@@ -6,8 +6,9 @@ import com.neshan.reportservice.model.enums.ReportType;
 import com.neshan.reportservice.validation.ValidReportType;
 import jakarta.validation.constraints.NotNull;
 
+// FOR CREATION
 @ValidReportType
-public record ReportDto(
+public record CreateReportDto(
 
         @NotNull(message = "You must specify location of report!")
         Point location,

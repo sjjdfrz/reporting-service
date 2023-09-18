@@ -1,8 +1,9 @@
 package com.neshan.reportservice.util;
 
 public class AppConstants {
+
     public static final String DEFAULT_PAGE_NUMBER = "0";
-    public  static final String DEFAULT_PAGE_SIZE = "10";
+    public static final String DEFAULT_PAGE_SIZE = "10";
     public static final String DEFAULT_SORT_BY = "id";
 
     public static final String[] POST_UN_SECURED_URLs = {
@@ -29,7 +30,7 @@ public class AppConstants {
     };
 
     public static final String[] PATCH_OPERATOR_SECURED_URLs = {
-            "/approval-reports/{reportId}"
+            "/approval-reports/**"
     };
 
     public static final String[] GET_ADMIN_SECURED_URLs = {
@@ -44,6 +45,10 @@ public class AppConstants {
     public static final String[] DELETE_ADMIN_SECURED_URLs = {
             "/users/**",
             "/reports/**"
+    };
+
+    public static final String[] GET_USER_ADMIN_SECURED_URLs = {
+            "/my-reports"
     };
 
     public static final String[] POST_USER_ADMIN_SECURED_URLs = {
