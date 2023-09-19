@@ -5,9 +5,6 @@ import com.neshan.reportservice.model.dto.CreateReportDto;
 import com.neshan.reportservice.model.entity.Report;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
-import lombok.NoArgsConstructor;
-
-import java.time.LocalDateTime;
 
 @Builder
 @AllArgsConstructor
