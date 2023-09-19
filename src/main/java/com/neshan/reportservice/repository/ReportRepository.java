@@ -2,7 +2,6 @@ package com.neshan.reportservice.repository;
 
 import com.neshan.reportservice.model.dto.*;
 import com.neshan.reportservice.model.entity.Report;
-import com.neshan.reportservice.model.enums.ApprovalAction;
 import org.locationtech.jts.geom.LineString;
 import org.locationtech.jts.geom.Point;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -58,7 +57,7 @@ public interface ReportRepository extends JpaRepository<Report, Long> {
             where
             ST_DWithin(ST_Transform(location, 3857), ST_Transform(:routeLine, 3857), 10) and
             current_timestamp < expires_at and
-            (approved = true or approved IS null)
+            (approved = true or approved is null)
             """, nativeQuery = true)
     List<RouteReports> findAllReportsOfRoute(@Param("routeLine") LineString routeLine);
 

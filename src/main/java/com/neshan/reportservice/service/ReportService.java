@@ -17,6 +17,9 @@ import org.locationtech.jts.geom.LineString;
 import org.locationtech.jts.geom.Point;
 import org.locationtech.jts.io.ParseException;
 import org.locationtech.jts.io.WKTReader;
+import org.redisson.api.RLock;
+import org.redisson.api.RReadWriteLock;
+import org.redisson.api.RedissonClient;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -28,6 +31,7 @@ public class ReportService {
 
     private final ReportRepository reportRepository;
     private final ReportMapper reportMapper;
+    private final RedissonClient redissonClient;
 
     @Transactional
     public List<GetAllReportsDto> getAllReports() {
@@ -50,27 +54,42 @@ public class ReportService {
 
         // Check report duplication.
         Point location = PointConvertor.customPointToJtsPoint(createReportDto.location());
+
+        RLock lock = redissonClient.getLock("create-report");
+
+        lock.lock();
         if (reportRepository.existsDuplicateReport(
                 location,
                 createReportDto.type().getCode(),
                 ReportConstants.timeDifferenceConstants.get(createReportDto.title()))) {
             throw new DuplicateReportException("Duplicate Report!");
         }
-
         ReportFactory reportFactory = new ReportFactory(reportMapper);
         Report report = reportFactory.getReportByTitle(createReportDto);
         report.setUser(user);
         reportRepository.save(report);
+        lock.unlock();
     }
 
     @Transactional
     public void deleteReport(long id) {
+
+        RReadWriteLock rwLock = redissonClient.getReadWriteLock("deleteReportLock-" + id);
+        RLock writeLock = rwLock.writeLock();
+
+        writeLock.lock();
         reportRepository.deleteById(id);
+        writeLock.unlock();
     }
 
     @Transactional
     public void deleteAllReports() {
+
+        RLock lock = redissonClient.getLock("deleteAllReports");
+
+        lock.lock();
         reportRepository.deleteAll();
+        lock.unlock();
     }
 
     @Transactional
@@ -89,10 +108,14 @@ public class ReportService {
                 .orElseThrow(() -> new NoSuchElementFoundException(
                         String.format("The report with Id %d was not found.", reportId)));
 
+        RLock lock = redissonClient.getLock("feedbackReportLock-" + reportId);
+
+        lock.lock();
         if (action == FeedbackAction.LIKE)
             report.increaseExpiresAt(ReportConstants.likeConstants.get(report.getSubTitle()));
         else
             report.decreaseExpiresAt(ReportConstants.dislikeConstants.get(report.getSubTitle()));
+        lock.unlock();
     }
 
     @Transactional
@@ -107,6 +130,11 @@ public class ReportService {
 
     @Transactional
     public void approveReport(long reportId, ApprovalAction action) {
+
+        RLock lock = redissonClient.getLock("approveReportLock-" + reportId);
+
+        lock.lock();
         reportRepository.approveReport(reportId, action.name());
+        lock.unlock();
     }
 }
