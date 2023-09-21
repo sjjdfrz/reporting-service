@@ -40,7 +40,7 @@ In order to run this project you need:
 
 1) Clone this repository to your desired folder.
 ```
-git clone https://github.com/sjjdfrz/routing-reporting-system.git
+git clone https://github.com/sjjdfrz/reporting-service.git
 ```
 
 2) Fill environmental variables of application.yml with your own data.
