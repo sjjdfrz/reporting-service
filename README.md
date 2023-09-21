@@ -1,11 +1,11 @@
-![Routing Reporting Service](https://static.digiato.com/digiato/2021/02/18.jpg)
+![Reporting Service](https://static.digiato.com/digiato/2021/02/18.jpg)
 
-<h3 align="center"><b>Routing Reporting Service</b></h3>
+<h3 align="center"><b>Reporting Service</b></h3>
 
 
-# 📖 Routing Reporting Service
+# 📖 Reporting Service
 
-This project is about developing microservice for reporting service for routing and navigation applications.
+This project is about developing reporting microservice for routing and navigation applications.
 
 ## 🛠 Built With
 
