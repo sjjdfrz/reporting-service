@@ -1,8 +1,6 @@
 package com.neshan.reportservice.mapper;
 
 import com.neshan.reportservice.model.dto.CreateReportDto;
-import com.neshan.reportservice.model.dto.GetAllReportsDto;
-import com.neshan.reportservice.model.dto.GetAllReportsOfUserDto;
 import com.neshan.reportservice.model.dto.GetReportDto;
 import com.neshan.reportservice.model.entity.*;
 import org.mapstruct.*;

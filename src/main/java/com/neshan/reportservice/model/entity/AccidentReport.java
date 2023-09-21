@@ -8,6 +8,8 @@ import jakarta.persistence.PrePersist;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
+import org.hibernate.annotations.SQLDelete;
+import org.hibernate.annotations.Where;
 
 
 @Entity
@@ -15,6 +17,8 @@ import lombok.experimental.SuperBuilder;
 @AllArgsConstructor
 @NoArgsConstructor
 @DiscriminatorValue("accident")
+@SQLDelete(sql = "UPDATE reports SET deleted = true WHERE id=?")
+@Where(clause = "deleted=false")
 public class AccidentReport extends Report{
 
     private AccidentType type;
