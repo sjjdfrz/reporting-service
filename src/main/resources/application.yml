@@ -13,9 +13,9 @@ spring:
     jwtExpirationInMs: 3600000 # 1-hour
 
   datasource:
-    url: jdbc:postgresql://localhost:5432/routing-reporting-system
-    username: postgres
-    password: sajjad#farzaneh1
+    url: jdbc:postgresql://${DB_HOSTNAME}:${DB_PORT}/${DB_DATABASE}
+    username: ${DB_USERNAME}
+    password: ${DB_PASSWORD}
 
   jpa:
 #    show-sql: true
@@ -26,17 +26,17 @@ spring:
     hibernate:
       ddl-auto: create
 
-#resilience4j.ratelimiter:
-#  instances:
-#    rate-limit:
-#      limitForPeriod: 100
-#      limitRefreshPeriod: 1h
-#      timeoutDuration: 0s
-#      registerHealthIndicator: true
-#      eventConsumerBufferSize: 100
-#    login:
-#      limitForPeriod: 5
-#      limitRefreshPeriod: 1h
-#      timeoutDuration: 0s
-#      registerHealthIndicator: true
-#      eventConsumerBufferSize: 100
+resilience4j.ratelimiter:
+  instances:
+    rate-limit:
+      limitForPeriod: 100
+      limitRefreshPeriod: 1h
+      timeoutDuration: 0s
+      registerHealthIndicator: true
+      eventConsumerBufferSize: 100
+    login:
+      limitForPeriod: 5
+      limitRefreshPeriod: 1h
+      timeoutDuration: 0s
+      registerHealthIndicator: true
+      eventConsumerBufferSize: 100
