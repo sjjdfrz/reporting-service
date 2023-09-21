@@ -13,11 +13,16 @@ import java.util.List;
 
 public interface ReportRepository extends JpaRepository<Report, Long> {
 
+    @Query(value = """
+            select id, title, type
+            from reports
+            """, nativeQuery = true)
+    List<GetAllReportsDto> findAllReports();
 
     @Query(value = """
             select
             id, title, type,
-            ST_AsText(location) as location,
+            location as location,
             TO_CHAR(created_at, 'YYYY-MM-DD HH:MI:SS') as date
             from reports
             where user_id = :userId
@@ -25,10 +30,34 @@ public interface ReportRepository extends JpaRepository<Report, Long> {
     List<GetAllReportsOfUserDto> findAllReportsByUserId(@Param("userId") long userId);
 
     @Query(value = """
-            select id, title, type
+            select case when count(*) > 0 then true else false end
             from reports
+            where
+            location = :location and
+            type = :type and
+            extract(minute from current_timestamp - created_at) < :timeDifference
             """, nativeQuery = true)
-    List<GetAllReportsDto> findAllReports();
+    boolean existsDuplicateReport(
+            @Param("location") Point location,
+            @Param("type") int type,
+            @Param("timeDifference") int timeDifference);
+
+    @Query(value = """
+            select title, type, ST_AsText(location) as location
+            from reports
+            where
+            ST_DWithin(ST_Transform(location, 3857), ST_Transform(:routeLine, 3857), 10) and
+            current_timestamp < expires_at and
+            (approved = true or approved is null)
+            """, nativeQuery = true)
+    List<RouteReports> findAllReportsOfRoute(@Param("routeLine") LineString routeLine);
+
+    @Query(value = """
+            select id, title, type, ST_AsText(location) as location
+            from reports
+            where approved = false
+            """, nativeQuery = true)
+    List<ApprovalReports> findAllApprovedNeedReports();
 
     @Modifying
     @Query(value = """
@@ -43,34 +72,4 @@ public interface ReportRepository extends JpaRepository<Report, Long> {
     void approveReport(
             @Param("reportId") long reportId,
             @Param("action") String action);
-
-    @Query(value = """
-            select id, title, type, ST_AsText(location) as location
-            from reports
-            where approved = false
-            """, nativeQuery = true)
-    List<ApprovalReports> findAllApprovedNeedReports();
-
-    @Query(value = """
-            select title, type, ST_AsText(location) as location
-            from reports
-            where
-            ST_DWithin(ST_Transform(location, 3857), ST_Transform(:routeLine, 3857), 10) and
-            current_timestamp < expires_at and
-            (approved = true or approved is null)
-            """, nativeQuery = true)
-    List<RouteReports> findAllReportsOfRoute(@Param("routeLine") LineString routeLine);
-
-    @Query(value = """
-            select case when count(*) > 0 then true else false end
-            from reports
-            where
-            location = :location and
-            type = :type and
-            extract(minute from current_timestamp - created_at) < :timeDifference
-            """, nativeQuery = true)
-    boolean existsDuplicateReport(
-            @Param("location") Point location,
-            @Param("type") int type,
-            @Param("timeDifference") int timeDifference);
 }

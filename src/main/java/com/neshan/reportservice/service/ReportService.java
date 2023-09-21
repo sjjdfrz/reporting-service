@@ -50,6 +50,11 @@ public class ReportService {
     }
 
     @Transactional
+    public List<GetAllReportsOfUserDto> getAllReportsOfUser(User user) {
+        return reportRepository.findAllReportsByUserId(user.getId());
+    }
+
+    @Transactional
     public void createReport(CreateReportDto createReportDto, User user) {
 
         // Check report duplication.
@@ -115,12 +120,8 @@ public class ReportService {
             report.increaseExpiresAt(ReportConstants.likeConstants.get(report.getSubTitle()));
         else
             report.decreaseExpiresAt(ReportConstants.dislikeConstants.get(report.getSubTitle()));
+        reportRepository.save(report);
         lock.unlock();
-    }
-
-    @Transactional
-    public List<GetAllReportsOfUserDto> getAllReportsOfUser(User user) {
-        return reportRepository.findAllReportsByUserId(user.getId());
     }
 
     @Transactional

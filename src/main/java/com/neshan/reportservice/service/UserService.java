@@ -1,6 +1,5 @@
 package com.neshan.reportservice.service;
 
-import com.neshan.reportservice.exception.NoSuchElementFoundException;
 import com.neshan.reportservice.mapper.UserMapper;
 import com.neshan.reportservice.model.ApiResponse;
 import com.neshan.reportservice.model.dto.RegisterRequest;

@@ -6,7 +6,6 @@ import com.neshan.reportservice.model.entity.User;
 import com.neshan.reportservice.model.enums.ApprovalAction;
 import com.neshan.reportservice.model.enums.FeedbackAction;
 import com.neshan.reportservice.service.ReportService;
-import com.neshan.reportservice.util.AppConstants;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.locationtech.jts.io.ParseException;
@@ -98,7 +97,7 @@ public class ReportController {
         return new ResponseEntity<>(response, HttpStatus.NO_CONTENT);
     }
 
-    @DeleteMapping
+    @DeleteMapping("/reports")
     public ResponseEntity<ApiResponse<Object>> deleteAllReports() {
         reportService.deleteAllReports();
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);

@@ -17,7 +17,9 @@ import java.time.LocalDateTime;
 @SuperBuilder
 @AllArgsConstructor
 @NoArgsConstructor
-@Table(name = "reports")
+@Table(
+        name = "reports",
+indexes = @Index(name = "location_idx", columnList = "location"))
 @SQLDelete(sql = "UPDATE reports SET deleted = true WHERE id=?")
 @Where(clause = "deleted=false")
 @EntityListeners(AuditingEntityListener.class)
