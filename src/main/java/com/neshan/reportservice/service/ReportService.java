@@ -4,13 +4,13 @@ import com.neshan.reportservice.exception.DuplicateReportException;
 import com.neshan.reportservice.exception.NoSuchElementFoundException;
 import com.neshan.reportservice.mapper.ReportMapper;
 import com.neshan.reportservice.model.dto.*;
+import com.neshan.reportservice.model.dto.report.ReportDto;
 import com.neshan.reportservice.model.entity.Report;
 import com.neshan.reportservice.model.entity.User;
 import com.neshan.reportservice.model.enums.ApprovalAction;
 import com.neshan.reportservice.model.enums.FeedbackAction;
 import com.neshan.reportservice.repository.ReportRepository;
 import com.neshan.reportservice.util.ReportConstants;
-import com.neshan.reportservice.util.ReportFactory;
 import com.neshan.reportservice.util.PointConvertor;
 import lombok.RequiredArgsConstructor;
 import org.locationtech.jts.geom.LineString;
@@ -55,22 +55,22 @@ public class ReportService {
     }
 
     @Transactional
-    public void createReport(CreateReportDto createReportDto, User user) {
+    public void createReport(ReportDto reportDto, User user) {
 
         // Check report duplication.
-        Point location = PointConvertor.customPointToJtsPoint(createReportDto.location());
+        Point location = PointConvertor.customPointToJtsPoint(reportDto.getLocation());
 
         RLock lock = redissonClient.getLock("create-report");
 
         lock.lock();
         if (reportRepository.existsDuplicateReport(
                 location,
-                createReportDto.type().getCode(),
-                ReportConstants.timeDifferenceConstants.get(createReportDto.title()))) {
+                reportDto.getTitle().name().toLowerCase(),
+                ReportConstants.timeDifferenceConstants.get(reportDto.getTitle()))) {
             throw new DuplicateReportException("Duplicate Report!");
         }
-        ReportFactory reportFactory = new ReportFactory(reportMapper);
-        Report report = reportFactory.getReportByTitle(createReportDto);
+
+        Report report = reportMapper.reportDtoToReport(reportDto);
         report.setUser(user);
         reportRepository.save(report);
         lock.unlock();

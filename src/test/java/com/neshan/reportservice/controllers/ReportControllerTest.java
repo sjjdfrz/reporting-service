@@ -4,14 +4,12 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.neshan.reportservice.dto.MockGetAllReportsDto;
 import com.neshan.reportservice.dto.MockRouteReports;
 import com.neshan.reportservice.model.Point;
-import com.neshan.reportservice.model.dto.CreateReportDto;
 import com.neshan.reportservice.model.dto.GetAllReportsDto;
 import com.neshan.reportservice.model.dto.RouteReports;
 import com.neshan.reportservice.model.dto.RoutingDto;
-import com.neshan.reportservice.model.enums.ApprovalAction;
-import com.neshan.reportservice.model.enums.FeedbackAction;
-import com.neshan.reportservice.model.enums.ReportTitle;
-import com.neshan.reportservice.model.enums.ReportType;
+import com.neshan.reportservice.model.dto.report.AccidentReportDto;
+import com.neshan.reportservice.model.dto.report.ReportDto;
+import com.neshan.reportservice.model.enums.*;
 import com.neshan.reportservice.security.JwtService;
 import com.neshan.reportservice.service.ReportService;
 import org.junit.jupiter.api.Test;
@@ -78,12 +76,16 @@ class ReportControllerTest {
     void createReport() throws Exception {
 
         Point point = new Point(51.43767714500427, 35.71753998427532);
-        CreateReportDto createReportDto = new CreateReportDto(
-                point, ReportTitle.ACCIDENT, ReportType.LIGHT);
+        ReportDto reportDto = AccidentReportDto
+                .builder()
+                .location(point)
+                .title(ReportTitle.ACCIDENT)
+                .type(AccidentType.LIGHT)
+                .build();
 
         mockMvc.perform(post("/reports")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(createReportDto)))
+                        .content(objectMapper.writeValueAsString(reportDto)))
                 .andExpect(status().isCreated())
                 .andExpect(jsonPath("$.status", is("success")))
                 .andExpect(jsonPath(

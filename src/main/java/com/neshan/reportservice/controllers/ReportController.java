@@ -2,6 +2,7 @@ package com.neshan.reportservice.controllers;
 
 import com.neshan.reportservice.model.ApiResponse;
 import com.neshan.reportservice.model.dto.*;
+import com.neshan.reportservice.model.dto.report.ReportDto;
 import com.neshan.reportservice.model.entity.User;
 import com.neshan.reportservice.model.enums.ApprovalAction;
 import com.neshan.reportservice.model.enums.FeedbackAction;
@@ -68,10 +69,10 @@ public class ReportController {
 
     @PostMapping("/reports")
     public ResponseEntity<ApiResponse<Object>> createReport(
-            @RequestBody @Valid CreateReportDto createReportDto,
+            @RequestBody @Valid ReportDto reportDto,
             @AuthenticationPrincipal User user) {
 
-        reportService.createReport(createReportDto, user);
+        reportService.createReport(reportDto, user);
 
         var response = ApiResponse
                 .builder()

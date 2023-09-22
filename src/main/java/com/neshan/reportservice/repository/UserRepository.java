@@ -1,6 +1,6 @@
 package com.neshan.reportservice.repository;
 
-import com.neshan.reportservice.model.dto.UserDto;
+import com.neshan.reportservice.model.dto.user.UserDto;
 import com.neshan.reportservice.model.entity.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;

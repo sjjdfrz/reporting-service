@@ -1,4 +1,4 @@
-package com.neshan.reportservice.model.dto;
+package com.neshan.reportservice.model.dto.user;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import jakarta.validation.constraints.Email;

@@ -1,7 +1,7 @@
 package com.neshan.reportservice.mapper;
 
-import com.neshan.reportservice.model.dto.CreateReportDto;
 import com.neshan.reportservice.model.dto.GetReportDto;
+import com.neshan.reportservice.model.dto.report.*;
 import com.neshan.reportservice.model.entity.*;
 import org.mapstruct.*;
 
@@ -11,39 +11,46 @@ public interface ReportMapper {
     @Mapping(target = "location", expression = "java(report.getLocation().toString())")
     GetReportDto reportToReportDto(Report report);
 
-    @Mapping(target = "location", expression = "java(com.neshan.reportservice.util.PointConvertor.customPointToJtsPoint(createReportDto.location()))")
-    @ValueMapping(target = MappingConstants.NULL, source = MappingConstants.ANY_REMAINING)
-    AccidentReport ReportDtoToAccidentReport(CreateReportDto createReportDto);
+    default Report reportDtoToReport(ReportDto reportDto) {
 
-    @Mapping(target = "location", expression = "java(com.neshan.reportservice.util.PointConvertor.customPointToJtsPoint(createReportDto.location()))")
-    @ValueMapping(target = MappingConstants.NULL, source = MappingConstants.ANY_REMAINING)
-    CameraReport ReportDtoToCameraReport(CreateReportDto createReportDto);
+        return switch (reportDto.getTitle()) {
 
-    @Mapping(target = "location", expression = "java(com.neshan.reportservice.util.PointConvertor.customPointToJtsPoint(createReportDto.location()))")
-    @ValueMapping(target = MappingConstants.NULL, source = MappingConstants.ANY_REMAINING)
-    MapBugsReport ReportDtoToMapBugsReport(CreateReportDto createReportDto);
+            case ACCIDENT -> ReportDtoToAccidentReport((AccidentReportDto) reportDto);
+            case CAMERA -> ReportDtoToCameraReport((CameraReportDto) reportDto);
+            case MAP_BUGS -> ReportDtoToMapBugsReport((MapBugsReportDto) reportDto);
+            case POLICE -> ReportDtoToPoliceReport((PoliceReportDto) reportDto);
+            case ROAD_LOCATIONS -> ReportDtoToRoadLocationsReport((RoadLocationsReportDto) reportDto);
+            case SPEED_BUMP -> ReportDtoToSpeedBumpReport((SpeedBumpReportDto) reportDto);
+            case TRAFFIC -> ReportDtoToTrafficReport((TrafficReportDto) reportDto);
+            case WAY_EVENTS -> ReportDtoToWayEventsReport((WayEventsReportDto) reportDto);
+            case WEATHER_CONDITIONS -> ReportDtoToWeatherConditionsReport((WeatherConditionsReportDto) reportDto);
+        };
+    }
 
-    @Mapping(target = "location", expression = "java(com.neshan.reportservice.util.PointConvertor.customPointToJtsPoint(createReportDto.location()))")
-    @ValueMapping(target = MappingConstants.NULL, source = MappingConstants.ANY_REMAINING)
-    PoliceReport ReportDtoToPoliceReport(CreateReportDto createReportDto);
+    @Mapping(target = "location", expression = "java(com.neshan.reportservice.util.PointConvertor.customPointToJtsPoint(accidentReportDto.getLocation()))")
+    AccidentReport ReportDtoToAccidentReport(AccidentReportDto accidentReportDto);
 
-    @Mapping(target = "location", expression = "java(com.neshan.reportservice.util.PointConvertor.customPointToJtsPoint(createReportDto.location()))")
-    @ValueMapping(target = MappingConstants.NULL, source = MappingConstants.ANY_REMAINING)
-    RoadLocationsReport ReportDtoToRoadLocationsReport(CreateReportDto createReportDto);
+    @Mapping(target = "location", expression = "java(com.neshan.reportservice.util.PointConvertor.customPointToJtsPoint(cameraReportDto.getLocation()))")
+    CameraReport ReportDtoToCameraReport(CameraReportDto cameraReportDto);
 
-    @Mapping(target = "location", expression = "java(com.neshan.reportservice.util.PointConvertor.customPointToJtsPoint(createReportDto.location()))")
-    @ValueMapping(target = MappingConstants.NULL, source = MappingConstants.ANY_REMAINING)
-    SpeedBumpReport ReportDtoToSpeedBumpReport(CreateReportDto createReportDto);
+    @Mapping(target = "location", expression = "java(com.neshan.reportservice.util.PointConvertor.customPointToJtsPoint(mapBugsReportDto.getLocation()))")
+    MapBugsReport ReportDtoToMapBugsReport(MapBugsReportDto mapBugsReportDto);
 
-    @Mapping(target = "location", expression = "java(com.neshan.reportservice.util.PointConvertor.customPointToJtsPoint(createReportDto.location()))")
-    @ValueMapping(target = MappingConstants.NULL, source = MappingConstants.ANY_REMAINING)
-    TrafficReport ReportDtoToTrafficReport(CreateReportDto createReportDto);
+    @Mapping(target = "location", expression = "java(com.neshan.reportservice.util.PointConvertor.customPointToJtsPoint(policeReportDto.getLocation()))")
+    PoliceReport ReportDtoToPoliceReport(PoliceReportDto policeReportDto);
 
-    @Mapping(target = "location", expression = "java(com.neshan.reportservice.util.PointConvertor.customPointToJtsPoint(createReportDto.location()))")
-    @ValueMapping(target = MappingConstants.NULL, source = MappingConstants.ANY_REMAINING)
-    WayEventsReport ReportDtoToWayEventsReport(CreateReportDto createReportDto);
+    @Mapping(target = "location", expression = "java(com.neshan.reportservice.util.PointConvertor.customPointToJtsPoint(roadLocationsReportDto.getLocation()))")
+    RoadLocationsReport ReportDtoToRoadLocationsReport(RoadLocationsReportDto roadLocationsReportDto);
 
-    @Mapping(target = "location", expression = "java(com.neshan.reportservice.util.PointConvertor.customPointToJtsPoint(createReportDto.location()))")
-    @ValueMapping(target = MappingConstants.NULL, source = MappingConstants.ANY_REMAINING)
-    WeatherConditionsReport ReportDtoToWeatherConditionsReport(CreateReportDto createReportDto);
+    @Mapping(target = "location", expression = "java(com.neshan.reportservice.util.PointConvertor.customPointToJtsPoint(speedBumpReportDto.getLocation()))")
+    SpeedBumpReport ReportDtoToSpeedBumpReport(SpeedBumpReportDto speedBumpReportDto);
+
+    @Mapping(target = "location", expression = "java(com.neshan.reportservice.util.PointConvertor.customPointToJtsPoint(trafficReportDto.getLocation()))")
+    TrafficReport ReportDtoToTrafficReport(TrafficReportDto trafficReportDto);
+
+    @Mapping(target = "location", expression = "java(com.neshan.reportservice.util.PointConvertor.customPointToJtsPoint(wayEventsReportDto.getLocation()))")
+    WayEventsReport ReportDtoToWayEventsReport(WayEventsReportDto wayEventsReportDto);
+
+    @Mapping(target = "location", expression = "java(com.neshan.reportservice.util.PointConvertor.customPointToJtsPoint(weatherConditionsReportDto.getLocation()))")
+    WeatherConditionsReport ReportDtoToWeatherConditionsReport(WeatherConditionsReportDto weatherConditionsReportDto);
 }

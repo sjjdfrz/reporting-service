@@ -1,7 +1,7 @@
 package com.neshan.reportservice.mapper;
 
-import com.neshan.reportservice.model.dto.RegisterRequest;
-import com.neshan.reportservice.model.dto.UsersDto;
+import com.neshan.reportservice.model.dto.auth.RegisterRequest;
+import com.neshan.reportservice.model.dto.user.UsersDto;
 import com.neshan.reportservice.model.entity.User;
 import org.mapstruct.*;
 

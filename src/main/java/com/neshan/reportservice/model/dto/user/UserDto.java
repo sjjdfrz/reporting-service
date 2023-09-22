@@ -1,4 +1,4 @@
-package com.neshan.reportservice.model.dto;
+package com.neshan.reportservice.model.dto.user;
 
 import com.neshan.reportservice.model.enums.ReportType;
 

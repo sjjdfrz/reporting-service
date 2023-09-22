@@ -1,8 +1,8 @@
 package com.neshan.reportservice.controllers;
 
 import com.neshan.reportservice.model.ApiResponse;
-import com.neshan.reportservice.model.dto.LoginRequest;
-import com.neshan.reportservice.model.dto.RegisterRequest;
+import com.neshan.reportservice.model.dto.auth.LoginRequest;
+import com.neshan.reportservice.model.dto.auth.RegisterRequest;
 import com.neshan.reportservice.service.AuthService;
 import io.github.resilience4j.ratelimiter.annotation.RateLimiter;
 import jakarta.validation.Valid;

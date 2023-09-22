@@ -1,12 +1,12 @@
 package com.neshan.reportservice.controllers;
 
 import com.neshan.reportservice.model.ApiResponse;
-import com.neshan.reportservice.model.dto.RegisterRequest;
-import com.neshan.reportservice.model.dto.UserDto;
-import com.neshan.reportservice.model.dto.UsersDto;
+import com.neshan.reportservice.model.dto.auth.RegisterRequest;
+import com.neshan.reportservice.model.dto.user.UserDto;
+import com.neshan.reportservice.model.dto.user.UsersDto;
 import com.neshan.reportservice.model.entity.User;
 import com.neshan.reportservice.service.UserService;
-import com.neshan.reportservice.util.AppConstants;
+import com.neshan.reportservice.util.PaginationSortingConstants;
 import io.github.resilience4j.ratelimiter.annotation.RateLimiter;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -28,15 +28,15 @@ public class UserController {
     public ResponseEntity<ApiResponse<List<UsersDto>>> getAllUsers(
             @RequestParam(
                     value = "page",
-                    defaultValue = AppConstants.DEFAULT_PAGE_NUMBER,
+                    defaultValue = PaginationSortingConstants.DEFAULT_PAGE_NUMBER,
                     required = false) int pageNo,
             @RequestParam(
                     value = "size",
-                    defaultValue = AppConstants.DEFAULT_PAGE_SIZE,
+                    defaultValue = PaginationSortingConstants.DEFAULT_PAGE_SIZE,
                     required = false) int pageSize,
             @RequestParam(
                     value = "sort",
-                    defaultValue = AppConstants.DEFAULT_SORT_BY,
+                    defaultValue = PaginationSortingConstants.DEFAULT_SORT_BY,
                     required = false) String sortBy
     ) {
         var users = userService.getAllUsers(pageNo, pageSize, sortBy);

@@ -19,6 +19,7 @@ import org.hibernate.annotations.Where;
 public class WeatherConditionsReport extends Report{
 
     private WeatherConditionsType type;
+    private boolean approved = true;
 
     @PrePersist
     public void prePersist() {

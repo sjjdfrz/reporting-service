@@ -19,6 +19,7 @@ import org.hibernate.annotations.Where;
 public class RoadLocationsReport extends Report{
 
     private RoadLocationsType type;
+    private boolean approved = true;
 
     @PrePersist
     public void prePersist() {
