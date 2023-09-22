@@ -19,6 +19,7 @@ import org.hibernate.annotations.Where;
 public class SpeedBumpReport extends Report{
 
     private SpeedBumpType type;
+    private boolean approved = true;
 
     @PrePersist
     public void prePersist() {

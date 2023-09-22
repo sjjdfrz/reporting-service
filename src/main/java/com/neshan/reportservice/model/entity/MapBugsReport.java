@@ -19,6 +19,7 @@ import org.hibernate.annotations.Where;
 public class MapBugsReport extends Report{
 
     private MapBugsType type;
+    private boolean approved = true;
 
     @PrePersist
     public void prePersist() {

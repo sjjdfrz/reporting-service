@@ -34,12 +34,12 @@ public interface ReportRepository extends JpaRepository<Report, Long> {
             from reports
             where
             location = :location and
-            type = :type and
+            title = :title and
             extract(minute from current_timestamp - created_at) < :timeDifference
             """, nativeQuery = true)
     boolean existsDuplicateReport(
             @Param("location") Point location,
-            @Param("type") int type,
+            @Param("title") String title,
             @Param("timeDifference") int timeDifference);
 
     @Query(value = """
@@ -48,7 +48,7 @@ public interface ReportRepository extends JpaRepository<Report, Long> {
             where
             ST_DWithin(ST_Transform(location, 3857), ST_Transform(:routeLine, 3857), 10) and
             current_timestamp < expires_at and
-            (approved = true or approved is null)
+            approved = true
             """, nativeQuery = true)
     List<RouteReports> findAllReportsOfRoute(@Param("routeLine") LineString routeLine);
 

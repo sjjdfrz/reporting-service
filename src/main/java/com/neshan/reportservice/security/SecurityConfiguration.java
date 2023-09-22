@@ -2,7 +2,7 @@ package com.neshan.reportservice.security;
 
 import com.neshan.reportservice.exception.CustomAccessDeniedHandler;
 import com.neshan.reportservice.exception.CustomAuthenticationEntryPoint;
-import com.neshan.reportservice.util.AppConstants;
+import com.neshan.reportservice.util.SecurityConstants;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -32,27 +32,27 @@ public class SecurityConfiguration {
         return http
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers(HttpMethod.POST, AppConstants.POST_UN_SECURED_URLs)
+                        .requestMatchers(HttpMethod.POST, SecurityConstants.POST_UN_SECURED_URLs)
                         .permitAll()
-                        .requestMatchers(HttpMethod.GET, AppConstants.GET_USER_SECURED_URLs)
+                        .requestMatchers(HttpMethod.GET, SecurityConstants.GET_USER_SECURED_URLs)
                         .hasAuthority("USER")
-                        .requestMatchers(HttpMethod.PATCH, AppConstants.PATCH_USER_SECURED_URLs)
+                        .requestMatchers(HttpMethod.PATCH, SecurityConstants.PATCH_USER_SECURED_URLs)
                         .hasAuthority("USER")
-                        .requestMatchers(HttpMethod.DELETE, AppConstants.DELETE_USER_SECURED_URLs)
+                        .requestMatchers(HttpMethod.DELETE, SecurityConstants.DELETE_USER_SECURED_URLs)
                         .hasAuthority("USER")
-                        .requestMatchers(HttpMethod.GET, AppConstants.GET_OPERATOR_SECURED_URLs)
+                        .requestMatchers(HttpMethod.GET, SecurityConstants.GET_OPERATOR_SECURED_URLs)
                         .hasAuthority("OPERATOR")
-                        .requestMatchers(HttpMethod.PATCH, AppConstants.PATCH_OPERATOR_SECURED_URLs)
+                        .requestMatchers(HttpMethod.PATCH, SecurityConstants.PATCH_OPERATOR_SECURED_URLs)
                         .hasAuthority("OPERATOR")
-                        .requestMatchers(HttpMethod.GET, AppConstants.GET_ADMIN_SECURED_URLs)
+                        .requestMatchers(HttpMethod.GET, SecurityConstants.GET_ADMIN_SECURED_URLs)
                         .hasAuthority("ADMIN")
-                        .requestMatchers(HttpMethod.PATCH, AppConstants.PATCH_ADMIN_SECURED_URLs)
+                        .requestMatchers(HttpMethod.PATCH, SecurityConstants.PATCH_ADMIN_SECURED_URLs)
                         .hasAuthority("ADMIN")
-                        .requestMatchers(HttpMethod.DELETE, AppConstants.DELETE_ADMIN_SECURED_URLs)
+                        .requestMatchers(HttpMethod.DELETE, SecurityConstants.DELETE_ADMIN_SECURED_URLs)
                         .hasAuthority("ADMIN")
-                        .requestMatchers(HttpMethod.GET, AppConstants.GET_USER_ADMIN_SECURED_URLs)
+                        .requestMatchers(HttpMethod.GET, SecurityConstants.GET_USER_ADMIN_SECURED_URLs)
                         .hasAnyAuthority("ADMIN", "USER")
-                        .requestMatchers(HttpMethod.POST, AppConstants.POST_USER_ADMIN_SECURED_URLs)
+                        .requestMatchers(HttpMethod.POST, SecurityConstants.POST_USER_ADMIN_SECURED_URLs)
                         .hasAnyAuthority("ADMIN", "USER")
                         .anyRequest()
                         .authenticated()

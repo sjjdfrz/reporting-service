@@ -2,9 +2,9 @@ package com.neshan.reportservice.service;
 
 import com.neshan.reportservice.mapper.UserMapper;
 import com.neshan.reportservice.model.ApiResponse;
-import com.neshan.reportservice.model.dto.RegisterRequest;
-import com.neshan.reportservice.model.dto.UserDto;
-import com.neshan.reportservice.model.dto.UsersDto;
+import com.neshan.reportservice.model.dto.auth.RegisterRequest;
+import com.neshan.reportservice.model.dto.user.UserDto;
+import com.neshan.reportservice.model.dto.user.UsersDto;
 import com.neshan.reportservice.model.entity.User;
 import com.neshan.reportservice.repository.UserRepository;
 import com.neshan.reportservice.util.PaginationSorting;

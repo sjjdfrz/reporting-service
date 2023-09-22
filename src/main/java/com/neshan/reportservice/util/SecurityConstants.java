@@ -1,10 +1,6 @@
 package com.neshan.reportservice.util;
 
-public class AppConstants {
-
-    public static final String DEFAULT_PAGE_NUMBER = "0";
-    public static final String DEFAULT_PAGE_SIZE = "10";
-    public static final String DEFAULT_SORT_BY = "id";
+public class SecurityConstants {
 
     public static final String[] POST_UN_SECURED_URLs = {
             "/register",

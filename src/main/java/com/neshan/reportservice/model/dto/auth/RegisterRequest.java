@@ -1,4 +1,4 @@
-package com.neshan.reportservice.model.dto;
+package com.neshan.reportservice.model.dto.auth;
 
 
 import com.neshan.reportservice.validation.PasswordMatching;

@@ -1,4 +1,4 @@
-package com.neshan.reportservice.model.dto;
+package com.neshan.reportservice.model.dto.auth;
 
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
